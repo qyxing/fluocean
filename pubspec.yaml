@@ -1,7 +1,6 @@
 name: fluocean
 description: Oceanengine's Pangolin Plugin
 version: 0.0.1
-author: caobohua <coreblock@gmail.com>
 homepage: https://qyxing.cn
 
 environment:

@@ -1,13 +1,4 @@
-import 'dart:async';
+library fluocean;
 
-import 'package:flutter/services.dart';
-
-class Fluocean {
-  static const MethodChannel _channel =
-      const MethodChannel('fluocean');
-
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-}
+export 'package:fluocean/main.dart';
+export 'package:fluocean/response.dart';

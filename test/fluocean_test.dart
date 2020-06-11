@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fluocean/fluocean.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('fluocean');
+  const MethodChannel channel = MethodChannel('qyxing.cn/fluocean');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await Fluocean.platformVersion, '42');
+    expect(await platformVersion, '42');
   });
 }

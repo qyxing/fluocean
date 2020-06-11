@@ -1,0 +1,29 @@
+PODS:
+  - Bytedance-UnionAD (2.9.5.8)
+  - fluocean (0.0.1):
+    - Bytedance-UnionAD
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - fluocean (from `.symlinks/plugins/fluocean/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - Bytedance-UnionAD
+
+EXTERNAL SOURCES:
+  fluocean:
+    :path: ".symlinks/plugins/fluocean/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  Bytedance-UnionAD: af6f65144b4fce6329946e89f262ffc8c6c1937c
+  fluocean: 284cb8d0d5328084d89c34970ea2ab8c00b80e3b
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+
+PODFILE CHECKSUM: 9749a7afefafd59f19a8a5ad326559ac66e7ca82
+
+COCOAPODS: 1.9.3

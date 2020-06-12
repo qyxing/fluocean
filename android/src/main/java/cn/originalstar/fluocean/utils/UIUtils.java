@@ -29,7 +29,8 @@ public class UIUtils {
         float height;
         int realHeight = getRealHeight(activity);
         if (UIUtils.hasNotchScreen(activity)) {
-            height = px2dip(activity, realHeight - getStatusBarHeight(activity));
+            height = px2dip(activity,
+                    realHeight - getStatusBarHeight(activity));
         }else {
             height = px2dip(activity, realHeight);
         }
@@ -42,7 +43,7 @@ public class UIUtils {
         }
         try {
             //隐藏虚拟按键，并且全屏
-            if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
+            if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) {
                 View v = activity.getWindow().getDecorView();
                 v.setSystemUiVisibility(View.GONE);
             } else if (Build.VERSION.SDK_INT >= 19) {
@@ -51,11 +52,11 @@ public class UIUtils {
                 int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        //                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_IMMERSIVE;
                 decorView.setSystemUiVisibility(uiOptions);
-                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                activity.getWindow().addFlags(
+                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +65,8 @@ public class UIUtils {
 
     //获取屏幕真实高度，不包含下方虚拟导航栏
     public static int getRealHeight(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) context.getSystemService(
+                Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -79,9 +81,12 @@ public class UIUtils {
     //获取状态栏高度
     public static float getStatusBarHeight(Context context) {
         float height = 0;
-        int resourceId = context.getApplicationContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = context.getApplicationContext().getResources()
+                .getIdentifier("status_bar_height",
+                        "dimen", "android");
         if (resourceId > 0) {
-            height = context.getApplicationContext().getResources().getDimensionPixelSize(resourceId);
+            height = context.getApplicationContext().getResources()
+                    .getDimensionPixelSize(resourceId);
         }
         return height;
     }
@@ -95,8 +100,9 @@ public class UIUtils {
      * @return
      */
     public static boolean hasNotchScreen(Activity activity){
-        if (getInt("ro.miui.notch",activity) == 1 || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
-                || hasNotchAtVivo(activity) || isAndroidPHasNotch(activity)){ //TODO 各种品牌
+        if (getInt("ro.miui.notch",activity) == 1
+                || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
+                || hasNotchAtVivo(activity) || isAndroidPHasNotch(activity)){
             return true;
         }
 
@@ -113,7 +119,8 @@ public class UIUtils {
         if (Build.VERSION.SDK_INT >= 28){
             try {
                 Class windowInsets = Class.forName("android.view.WindowInsets");
-                Method method = windowInsets.getMethod("getDisplayCutout");
+                Method method = windowInsets.getMethod(
+                        "getDisplayCutout");
                 Object displayCutout = method.invoke(windowInsets);
                 if (displayCutout != null) {
                     ret = true;
@@ -136,13 +143,15 @@ public class UIUtils {
             try {
                 ClassLoader classLoader = activity.getClassLoader();
                 @SuppressWarnings("rawtypes")
-                Class SystemProperties = classLoader.loadClass("android.os.SystemProperties");
+                Class SystemProperties = classLoader.loadClass(
+                        "android.os.SystemProperties");
                 //参数类型
                 @SuppressWarnings("rawtypes")
                 Class[] paramTypes = new Class[2];
                 paramTypes[0] = String.class;
                 paramTypes[1] = int.class;
-                Method getInt = SystemProperties.getMethod("getInt", paramTypes);
+                Method getInt = SystemProperties.getMethod(
+                        "getInt", paramTypes);
                 //参数
                 Object[] params = new Object[2];
                 params[0] = new String(key);
@@ -172,7 +181,8 @@ public class UIUtils {
         boolean ret = false;
         try {
             ClassLoader classLoader = context.getClassLoader();
-            Class HwNotchSizeUtil = classLoader.loadClass("com.huawei.android.util.HwNotchSizeUtil");
+            Class HwNotchSizeUtil = classLoader.loadClass(
+                    "com.huawei.android.util.HwNotchSizeUtil");
             Method get = HwNotchSizeUtil.getMethod("hasNotchInScreen");
             ret = (boolean) get.invoke(HwNotchSizeUtil);
         } catch (ClassNotFoundException e) {
@@ -194,8 +204,10 @@ public class UIUtils {
         boolean ret = false;
         try {
             ClassLoader classLoader = context.getClassLoader();
-            Class FtFeature = classLoader.loadClass("android.util.FtFeature");
-            Method method = FtFeature.getMethod("isFeatureSupport", int.class);
+            Class FtFeature = classLoader.loadClass(
+                    "android.util.FtFeature");
+            Method method = FtFeature.getMethod(
+                    "isFeatureSupport", int.class);
             ret = (boolean) method.invoke(FtFeature, VIVO_NOTCH);
         } catch (ClassNotFoundException e) {
         } catch (NoSuchMethodException e) {
@@ -209,7 +221,8 @@ public class UIUtils {
      * @return
      */
     public static boolean hasNotchAtOPPO(Context context) {
-        return  context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
+        return  context.getPackageManager().hasSystemFeature(
+                "com.oppo.feature.screen.heteromorphism");
     }
 
     public static boolean isMiui() {

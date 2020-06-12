@@ -22,14 +22,29 @@ public class AdManagerHolder {
         return TTAdSdk.getAdManager();
     }
 
-    public static void init(Context context, String appId, Boolean useTextureView, String appName, Boolean allowShowNotify, Boolean allowShowPageWhenScreenLock, Boolean debug, Boolean supportMultiProcess, List<Integer> directDownloadNetworkType, TTCustomController c) {
+    public static void init(
+            Context context, String appId,  Boolean useTextureView,
+            String appName, Boolean allowShowNotify,
+            Boolean allowShowPageWhenScreenLock, Boolean debug,
+            Boolean supportMultiProcess,
+            List<Integer> directDownloadNetworkType,
+            TTCustomController c) {
         if (!sInit) {
-            TTAdSdk.init(context, buildConfig(context, appId, useTextureView, appName, allowShowNotify, allowShowPageWhenScreenLock, debug, supportMultiProcess, directDownloadNetworkType, c));
+            TTAdSdk.init(
+                    context,
+                    buildConfig(context, appId, useTextureView, appName,
+                            allowShowNotify, allowShowPageWhenScreenLock, debug,
+                            supportMultiProcess, directDownloadNetworkType, c));
             sInit = true;
         }
     }
 
-    private static TTAdConfig buildConfig(Context context, String appId, Boolean useTextureView, String appName, Boolean allowShowNotify, Boolean allowShowPageWhenScreenLock, Boolean debug, Boolean supportMultiProcess, List<Integer> directDownloadNetworkType, TTCustomController c) {
+    private static TTAdConfig buildConfig(
+            Context context, String appId, Boolean useTextureView,
+            String appName, Boolean allowShowNotify,
+            Boolean allowShowPageWhenScreenLock, Boolean debug,
+            Boolean supportMultiProcess,
+            List<Integer> directDownloadNetworkType, TTCustomController c) {
         int[] d = new int[directDownloadNetworkType.size()];
         for (int i = 0; i < directDownloadNetworkType.size(); i++) {
             d[i] = directDownloadNetworkType.get(i);

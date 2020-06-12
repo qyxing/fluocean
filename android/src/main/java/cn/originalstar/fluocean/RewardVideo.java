@@ -52,12 +52,14 @@ public class RewardVideo implements TTAdNative.RewardVideoAdListener,
         //step3:创建TTAdNative对象,用于调用广告请求接口
         mTTAdNative = ttAdManager.createAdNative(context);
 
-        loadAd((float) expressViewAcceptedSizeW, (float) expressViewAcceptedSizeH);
+        loadAd((float) expressViewAcceptedSizeW,
+                (float) expressViewAcceptedSizeH);
     }
 
     private boolean mHasShowDownloadActive = false;
 
-    private void loadAd(float expressViewAcceptedSizeW, float expressViewAcceptedSizeH) {
+    private void loadAd(float expressViewAcceptedSizeW,
+                        float expressViewAcceptedSizeH) {
         AdSlot.Builder builder = new AdSlot.Builder().setCodeId(codeId)
                 .setSupportDeepLink(supportDeepLink)
                 .setRewardName(rewardName) //奖励的名称
@@ -66,7 +68,8 @@ public class RewardVideo implements TTAdNative.RewardVideoAdListener,
                 .setMediaExtra(mediaExtra) //附加参数，可选
                 .setOrientation(orientation);
         if (isExpress) {
-            builder.setExpressViewAcceptedSize(expressViewAcceptedSizeW, expressViewAcceptedSizeH);
+            builder.setExpressViewAcceptedSize(expressViewAcceptedSizeW,
+                    expressViewAcceptedSizeH);
         }
         AdSlot adSlot = builder.build();
         //step5:请求广告
@@ -105,14 +108,17 @@ public class RewardVideo implements TTAdNative.RewardVideoAdListener,
     @Override
     public void onRewardVideoCached() {
         showToast("rewardVideoAd video cached");
-        mttRewardVideoAd.showRewardVideoAd(activity, TTAdConstant.RitScenes.CUSTOMIZE_SCENES, "scenes_test");
+        mttRewardVideoAd.showRewardVideoAd(activity,
+                TTAdConstant.RitScenes.CUSTOMIZE_SCENES, "scenes_test");
         mttRewardVideoAd = null;
     }
 
-    //视频广告的素材加载完毕，比如视频url等，在此回调后，可以播放在线视频，网络不好可能出现加载缓冲，影响体验。
+    //视频广告的素材加载完毕，比如视频url等，在此回调后，
+    // 可以播放在线视频，网络不好可能出现加载缓冲，影响体验。
     @Override
     public void onRewardVideoAdLoad(TTRewardVideoAd ad) {
-        showToast("rewardVideoAd loaded 广告类型：" + getAdType(ad.getRewardVideoAdType()));
+        showToast("rewardVideoAd loaded 广告类型："
+                + getAdType(ad.getRewardVideoAdType()));
         mttRewardVideoAd = ad;
         mttRewardVideoAd.setRewardAdInteractionListener(this);
         mttRewardVideoAd.setDownloadListener(this);
@@ -158,7 +164,8 @@ public class RewardVideo implements TTAdNative.RewardVideoAdListener,
                 " name:" + name);
         _channel.invokeMethod(
                 "onRewardResponse",
-                OceanResponse.reward(0, "success", verify, amount, name));
+                OceanResponse.reward(0,
+                        "success", verify, amount, name));
     }
 
     @Override
@@ -175,9 +182,12 @@ public class RewardVideo implements TTAdNative.RewardVideoAdListener,
     }
 
     @Override
-    public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+    public void onDownloadActive(long totalBytes, long currBytes,
+                                 String fileName, String appName) {
         if (debug) {
-            Log.d("DML", "onDownloadActive==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
+            Log.d("DML", "onDownloadActive==totalBytes="
+                    + totalBytes + ",currBytes=" + currBytes
+                    + ",fileName=" + fileName + ",appName=" + appName);
         }
         if (!mHasShowDownloadActive) {
             mHasShowDownloadActive = true;
@@ -186,34 +196,48 @@ public class RewardVideo implements TTAdNative.RewardVideoAdListener,
     }
 
     @Override
-    public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+    public void onDownloadPaused(long totalBytes, long currBytes,
+                                 String fileName, String appName) {
         if (debug) {
-            Log.d("DML", "onDownloadPaused===totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
-            TToast.show(context, "下载暂停，点击下载区域继续", Toast.LENGTH_LONG);
+            Log.d("DML", "onDownloadPaused===totalBytes="
+                    + totalBytes + ",currBytes=" + currBytes + ",fileName="
+                    + fileName + ",appName=" + appName);
+            TToast.show(context, "下载暂停，点击下载区域继续",
+                    Toast.LENGTH_LONG);
         }
     }
 
     @Override
-    public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+    public void onDownloadFailed(long totalBytes, long currBytes,
+                                 String fileName, String appName) {
         if (debug) {
-            Log.d("DML", "onDownloadFailed==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
-            TToast.show(context, "下载失败，点击下载区域重新下载", Toast.LENGTH_LONG);
+            Log.d("DML", "onDownloadFailed==totalBytes=" +
+                    totalBytes + ",currBytes=" + currBytes + ",fileName="
+                    + fileName + ",appName=" + appName);
+            TToast.show(context, "下载失败，点击下载区域重新下载",
+                    Toast.LENGTH_LONG);
         }
     }
 
     @Override
-    public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+    public void onDownloadFinished(long totalBytes,
+                                   String fileName, String appName) {
         if (debug) {
-            Log.d("DML", "onDownloadFinished==totalBytes=" + totalBytes + ",fileName=" + fileName + ",appName=" + appName);
-            TToast.show(context, "下载完成，点击下载区域重新下载", Toast.LENGTH_LONG);
+            Log.d("DML", "onDownloadFinished==totalBytes="
+                    + totalBytes + ",fileName=" + fileName
+                    + ",appName=" + appName);
+            TToast.show(context, "下载完成，点击下载区域重新下载",
+                    Toast.LENGTH_LONG);
         }
     }
 
     @Override
     public void onInstalled(String fileName, String appName) {
         if (debug) {
-            Log.d("DML", "onInstalled==" + ",fileName=" + fileName + ",appName=" + appName);
-            TToast.show(context, "安装完成，点击下载区域打开", Toast.LENGTH_LONG);
+            Log.d("DML", "onInstalled=="
+                    + ",fileName=" + fileName + ",appName=" + appName);
+            TToast.show(context, "安装完成，点击下载区域打开",
+                    Toast.LENGTH_LONG);
         }
     }
 

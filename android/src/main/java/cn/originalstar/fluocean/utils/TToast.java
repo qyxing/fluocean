@@ -28,7 +28,8 @@ public final class TToast {
         if (context == null) {
             return sToast;
         }
-        sToast = Toast.makeText(context.getApplicationContext(), "", Toast.LENGTH_SHORT);
+        sToast = Toast.makeText(context.getApplicationContext(),
+                "", Toast.LENGTH_SHORT);
         return sToast;
     }
 

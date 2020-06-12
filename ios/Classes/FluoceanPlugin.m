@@ -96,7 +96,8 @@ FlutterMethodChannel* globalMethodChannel;
     model.extra =mediaExtra;
     model.rewardAmount = rewardAmount.integerValue;
     
-    self.rewardedAd = [[BUNativeExpressRewardedVideoAd alloc] initWithSlotID:slotId rewardedVideoModel:model];
+    self.rewardedAd = [[BUNativeExpressRewardedVideoAd alloc]
+                       initWithSlotID:slotId rewardedVideoModel:model];
     self.rewardedAd.delegate = self;
     [self.rewardedAd loadAdData];
     

@@ -38,7 +38,7 @@ Android - 2.9.5.0
 ```yaml
 # add this line to your dependencies
 dependencies:
-  fluocean: ^0.1.0
+  fluocean: ^0.1.2
 ```
 
 ## 环境配置
@@ -191,7 +191,7 @@ fluocean.eventHandler.listen((value) {
 | 版本  | 更新信息  |
 | :------------ |:---------------:|
 | 0.0.1  | 项目初始化 |
-| 0.1.1  | 集成穿山甲开屏广告与激励广告(支持Android与IOS) |
+| 0.1.2  | 集成穿山甲开屏广告与激励广告(支持Android与IOS) |
 
 ## 联系方式
 * 欢迎小伙伴加入，一起完善。

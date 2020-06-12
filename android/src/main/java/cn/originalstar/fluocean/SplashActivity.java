@@ -75,7 +75,8 @@ public class SplashActivity extends Activity implements
         if (isExpress) {
             float expressViewWidth = UIUtils.getScreenWidthDp(this);
             float expressViewHeight = UIUtils.getHeight(this);
-            builder.setExpressViewAcceptedSize(expressViewWidth, expressViewHeight);
+            builder.setExpressViewAcceptedSize(
+                    expressViewWidth, expressViewHeight);
         }
         AdSlot adSlot = builder.build();
         mTTAdNative.loadSplashAd(adSlot, this, AD_TIME_OUT);

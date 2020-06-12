@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'fluocean'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Oceanengine Pangolin Plugin'
   s.description      = <<-DESC
 Oceanengine's Pangolin Plugin

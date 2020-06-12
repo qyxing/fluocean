@@ -1,6 +1,6 @@
 name: fluocean
 description: Oceanengine's Pangolin Plugin. Integrated pangolin advertising SDK, supports Android and IOS two platforms. Currently only integrated open screen ads and incentive ads
-version: 0.1.2
+version: 0.1.3
 homepage: https://github.com/qyxing/fluocean
 
 environment:

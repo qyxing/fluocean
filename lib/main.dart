@@ -38,6 +38,7 @@ Future<OceanResponse> registerPangolin({
   @required bool allowShowPageWhenScreenLock,
   @required bool debug,
   @required bool supportMultiProcess,
+  bool canUseLocation = false,
   List<int> directDownloadNetworkType,
 }) async {
   Map map = await _channel.invokeMethod<Map>('registerPangolin', {
@@ -47,6 +48,7 @@ Future<OceanResponse> registerPangolin({
     'allowShowNotify': allowShowNotify,
     'allowShowPageWhenScreenLock': allowShowPageWhenScreenLock,
     'debug': debug,
+    'canUseLocation': canUseLocation,
     'supportMultiProcess': supportMultiProcess,
     'directDownloadNetworkType': directDownloadNetworkType ??
         [

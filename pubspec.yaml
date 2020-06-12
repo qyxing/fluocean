@@ -1,7 +1,7 @@
 name: fluocean
-description: Oceanengine's Pangolin Plugin
-version: 0.0.1
-homepage: https://qyxing.cn
+description: 穿山甲广告接入
+version: 0.1.0
+homepage: https://github.com/qyxing/fluocean
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

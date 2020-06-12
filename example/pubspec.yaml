@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  permission_handler: ^5.0.1
+  flutter_screenutil: ^1.1.0
 
   fluocean:
     # When depending on this package from a real application you should use:

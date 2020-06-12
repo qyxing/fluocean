@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* TODO: 初始化项目.
+
+## 0.1.0
+
+* TODO: 集成穿山甲开屏广告与激励广告(支持Android与IOS)

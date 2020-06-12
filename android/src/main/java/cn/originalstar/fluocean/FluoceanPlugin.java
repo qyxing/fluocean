@@ -7,6 +7,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 
 import com.bytedance.sdk.openadsdk.TTAdConstant;
+import com.bytedance.sdk.openadsdk.TTCustomController;
 
 import java.util.List;
 
@@ -138,6 +139,7 @@ public class FluoceanPlugin implements FlutterPlugin, MethodCallHandler, Activit
     Boolean allowShowNotify = call.argument("allowShowNotify");
     Boolean allowShowPageWhenScreenLock = call.argument("allowShowPageWhenScreenLock");
     Boolean debug = call.argument("debug");
+    final Boolean canUseLocation = call.argument("canUseLocation");
     Boolean supportMultiProcess = call.argument("supportMultiProcess");
     List<Integer> directDownloadNetworkType = call.argument("directDownloadNetworkType");
     if(useTextureView == null){
@@ -163,8 +165,17 @@ public class FluoceanPlugin implements FlutterPlugin, MethodCallHandler, Activit
       result.success(OceanResponse.error(400, "appName不能为null"));
       return;
     }
+    TTCustomController c = new TTCustomController(){
+      @Override
+      public boolean isCanUseLocation() {
+        if(canUseLocation == null){
+          return false;
+        }
+        return canUseLocation;
+      }
+    };
     try{
-      AdManagerHolder.init(applicationContext, appId, useTextureView, appName, allowShowNotify, allowShowPageWhenScreenLock, debug, supportMultiProcess,directDownloadNetworkType);
+      AdManagerHolder.init(applicationContext, appId, useTextureView, appName, allowShowNotify, allowShowPageWhenScreenLock, debug, supportMultiProcess,directDownloadNetworkType, c);
       result.success(OceanResponse.success("success"));
     }catch (Exception e){
       result.success(OceanResponse.error(500, e.getMessage()));

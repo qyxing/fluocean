@@ -60,7 +60,39 @@ Future<OceanResponse> registerPangolin({
 }
 
 // 开屏广告
-Future<OceanResponse> loadSplashAd( {@required String codeId, @required bool debug}) async {
-  Map map = await _channel.invokeMethod<Map>('loadSplashAd', {'codeId': codeId, 'debug': debug});
+Future<OceanResponse> loadSplashAd(
+    {@required String codeId, @required bool debug}) async {
+  Map map = await _channel
+      .invokeMethod<Map>('loadSplashAd', {'codeId': codeId, 'debug': debug});
+  return OceanResponse.create('onResponse', map);
+}
+
+// 激励广告
+Future<OceanResponse> loadRewardAd({
+  @required String codeId,
+  @required bool debug,
+  @required bool supportDeepLink,
+  @required String rewardName,
+  @required int rewardAmount,
+  @required bool isExpress,
+  double expressViewAcceptedSizeH,
+  double expressViewAcceptedSizeW,
+  @required userID,
+  String mediaExtra,
+  @required bool isHorizontal,
+}) async {
+  Map map = await _channel.invokeMethod("loadRewardAd", {
+    "codeId": codeId,
+    "debug": debug,
+    "supportDeepLink": supportDeepLink,
+    "rewardName": rewardName,
+    "rewardAmount": rewardAmount,
+    "isExpress": isExpress,
+    "expressViewAcceptedSizeH": expressViewAcceptedSizeH,
+    "expressViewAcceptedSizeW": expressViewAcceptedSizeW,
+    "userID": userID,
+    "mediaExtra": mediaExtra,
+    "isHorizontal": isHorizontal,
+  });
   return OceanResponse.create('onResponse', map);
 }

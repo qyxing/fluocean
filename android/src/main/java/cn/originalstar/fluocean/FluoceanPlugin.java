@@ -6,6 +6,8 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import com.bytedance.sdk.openadsdk.TTAdConstant;
+
 import java.util.List;
 
 import cn.originalstar.fluocean.vo.OceanResponse;
@@ -40,16 +42,20 @@ public class FluoceanPlugin implements FlutterPlugin, MethodCallHandler, Activit
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
+    if("getPlatformVersion".equals(call.method)){
       result.success("Android " + android.os.Build.VERSION.RELEASE);
       return;
     }
-    if(call.method.equals("registerPangolin")){
+    if("registerPangolin".equals(call.method)){
       registerPangolin(call, result);
       return;
     }
-    if(call.method.equals("loadSplashAd")){
+    if("loadSplashAd".equals(call.method)){
       loadSplashAd(call, result);
+      return;
+    }
+    if("loadRewardAd".equals(call.method)){
+      loadRewardAd(call, result);
       return;
     }
     result.notImplemented();
@@ -78,6 +84,38 @@ public class FluoceanPlugin implements FlutterPlugin, MethodCallHandler, Activit
   @Override
   public void onDetachedFromActivity() {
 
+  }
+
+  // 激励广告
+  private void loadRewardAd(MethodCall call, Result result){
+    RewardVideo rewardVideo = new RewardVideo();
+    RewardVideo._channel = channel;
+    rewardVideo.activity = activity;
+    rewardVideo.context = applicationContext;
+    if (call.argument("expressViewAcceptedSizeH") != null) {
+      rewardVideo.expressViewAcceptedSizeH = call.argument("expressViewAcceptedSizeH");
+    }
+    if (call.argument("expressViewAcceptedSizeW") != null){
+      rewardVideo.expressViewAcceptedSizeW = call.argument("expressViewAcceptedSizeW");
+    }
+    if (call.argument("mediaExtra") != null){
+      rewardVideo.mediaExtra = call.argument("mediaExtra");
+    }
+    rewardVideo.codeId = call.argument("codeId");
+    rewardVideo.debug = call.argument("debug");
+    rewardVideo.isExpress = call.argument("isExpress");
+    rewardVideo.supportDeepLink = call.argument("supportDeepLink");
+    rewardVideo.rewardName = call.argument("rewardName");
+    rewardVideo.rewardAmount = (int)call.argument("rewardAmount");
+    rewardVideo.userID = call.argument("userID");
+
+    Boolean isHorizontal = call.argument("isHorizontal");
+    rewardVideo.orientation = isHorizontal ?
+            TTAdConstant.HORIZONTAL : TTAdConstant.VERTICAL;
+
+    rewardVideo.init();
+
+    result.success(OceanResponse.success("success"));
   }
 
   // 开屏广告

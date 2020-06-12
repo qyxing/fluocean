@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -18,7 +19,11 @@ import com.bytedance.sdk.openadsdk.TTSplashAd;
 import cn.originalstar.fluocean.utils.TToast;
 import cn.originalstar.fluocean.utils.UIUtils;
 
-public class SplashActivity extends Activity implements TTAdNative.SplashAdListener, TTSplashAd.AdInteractionListener, TTAppDownloadListener {
+public class SplashActivity extends Activity implements
+        TTAdNative.SplashAdListener, TTSplashAd.AdInteractionListener,
+        TTAppDownloadListener {
+
+    private static final String TAG = "SplashActivity";
 
     private TTAdNative mTTAdNative;
     private FrameLayout splashContainer;
@@ -42,7 +47,7 @@ public class SplashActivity extends Activity implements TTAdNative.SplashAdListe
         splashContainer = (FrameLayout) findViewById(R.id.splash_container);
         Intent intent = getIntent();
         codeId = intent.getStringExtra("codeId");
-        debug = intent.getBooleanExtra("debug",false);
+        debug = intent.getBooleanExtra("debug", false);
         getExtraInfo();
         loadSplashAd();
     }
@@ -62,24 +67,17 @@ public class SplashActivity extends Activity implements TTAdNative.SplashAdListe
         super.onStop();
     }
 
-    private void loadSplashAd(){
-        AdSlot adSlot = null;
+    private void loadSplashAd() {
+        AdSlot.Builder builder = new AdSlot.Builder()
+                .setCodeId(codeId)
+                .setSupportDeepLink(true)
+                .setImageAcceptedSize(1080, 1920);
         if (isExpress) {
             float expressViewWidth = UIUtils.getScreenWidthDp(this);
             float expressViewHeight = UIUtils.getHeight(this);
-            adSlot = new AdSlot.Builder()
-                    .setCodeId(codeId)
-                    .setSupportDeepLink(true)
-                    .setImageAcceptedSize(1080, 1920)
-                    .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight)
-                    .build();
-        } else {
-            adSlot = new AdSlot.Builder()
-                    .setCodeId(codeId)
-                    .setSupportDeepLink(true)
-                    .setImageAcceptedSize(1080, 1920)
-                    .build();
+            builder.setExpressViewAcceptedSize(expressViewWidth, expressViewHeight);
         }
+        AdSlot adSlot = builder.build();
         mTTAdNative.loadSplashAd(adSlot, this, AD_TIME_OUT);
     }
 
@@ -101,7 +99,8 @@ public class SplashActivity extends Activity implements TTAdNative.SplashAdListe
     }
 
     private void showToast(String msg) {
-        if(debug){
+        Log.d(TAG, msg);
+        if (debug) {
             TToast.show(this, msg);
         }
     }
@@ -129,11 +128,10 @@ public class SplashActivity extends Activity implements TTAdNative.SplashAdListe
         }
         //获取SplashView
         View view = ad.getSplashView();
-        if (view != null && splashContainer != null && !SplashActivity.this.isFinishing()) {
+        if (view != null && splashContainer != null
+                && !SplashActivity.this.isFinishing()) {
             splashContainer.removeAllViews();
-            //把SplashView 添加到ViewGroup中,注意开屏广告view：width >=70%屏幕宽；height >=50%屏幕高
             splashContainer.addView(view);
-            //设置不开启开屏广告倒计时功能以及不显示跳过按钮,如果这么设置，您需要自定义倒计时逻辑
             //ad.setNotAllowSdkCountdown();
         } else {
             goToMainActivity();

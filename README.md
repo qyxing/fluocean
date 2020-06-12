@@ -52,7 +52,7 @@ dependencies:
 ## flocean集成
 ### Android
  [下载open_ad_sdk.aar](https://github.com/qyxing/fluocean/blob/master/example/android/open_ad_sdk/open_ad_sdk.aar)。或者从官方SDK下载。
-将open_ad_sdk.arr导入 aar 及 SDK 依赖的 jar 包
+将open_ad_sdk.arr导入工程
 
 ### iOS
 ```

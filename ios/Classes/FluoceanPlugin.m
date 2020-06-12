@@ -9,7 +9,10 @@
 #endif
 #import <BUAdSDK/BUAdSDK.h>
 
-@interface FluoceanPlugin ()<BUSplashAdDelegate>
+@interface FluoceanPlugin ()<BUSplashAdDelegate, BUNativeExpressRewardedVideoAdDelegate, BURewardedVideoAdDelegate>
+
+@property (nonatomic, strong) BURewardedVideoAd *rewardedAd;
+@property (nonatomic, strong) BUNativeExpressRewardedVideoAd *rewardedExpressAd;
 
 @end
 
@@ -39,6 +42,10 @@ FlutterMethodChannel* globalMethodChannel;
     }
     if ([@"loadSplashAd" isEqualToString:call.method]) {
         [self loadSplashAd: call result:result];
+        return;
+    }
+    if ([@"loadRewardAd" isEqualToString:call.method]) {
+        [self loadRewardAd: call result:result];
         return;
     }
     result(FlutterMethodNotImplemented);
@@ -76,6 +83,34 @@ FlutterMethodChannel* globalMethodChannel;
     result(@{@"code":[NSNumber numberWithInt:0],@"message":@"success"});
 }
 
+// 激励广告
+- (void)loadRewardAd:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* slotId = call.arguments[@"codeId"];
+    NSString* userId = call.arguments[@"userID"];
+    NSString* rewardName = call.arguments[@"rewardName"];
+    NSString* mediaExtra = call.arguments[@"mediaExtra"];
+    NSNumber* rewardAmount = call.arguments[@"rewardAmount"];
+    BOOL isExpress = call.arguments[@"isExpress"];
+    
+    BURewardedVideoModel *model = [[BURewardedVideoModel alloc] init];
+    model.userId = userId;
+    model.rewardName = rewardName;
+    // model.extra =mediaExtra;
+    // model.rewardAmount = rewardAmount.integerValue;
+    
+    if(isExpress){
+        self.rewardedExpressAd = [[BUNativeExpressRewardedVideoAd alloc] initWithSlotID:slotId rewardedVideoModel:model];
+        self.rewardedExpressAd.delegate = self;
+        [self.rewardedExpressAd loadAdData];
+    }else{
+        self.rewardedAd = [[BURewardedVideoAd alloc] initWithSlotID:slotId rewardedVideoModel:model];
+        self.rewardedAd.delegate = self;
+        [self.rewardedAd loadAdData];
+    }
+    
+    result(@{@"code":[NSNumber numberWithInt:0],@"message":@"success"});
+}
+
 //展示视频用
 - (UIViewController *)rootViewController{
     UIViewController *rootVC = [[UIApplication sharedApplication].delegate window].rootViewController;
@@ -89,7 +124,13 @@ FlutterMethodChannel* globalMethodChannel;
     return rootVC;
 }
 
-// 开屏广告回调方法
+/**
+ 开屏广告回调BUSplashAdDelegate
+ */
+- (void)splashAdWillVisible:(BUSplashAdView *)splashAd{
+    NSLog(@"splashAdWillVisible");
+}
+
 - (void)splashAdDidLoad:(BUSplashAdView *)splashAd {
     NSLog(@"splashAdDidLoad");
     NSLog(@"mediaExt-%@",splashAd.mediaExt);
@@ -121,5 +162,68 @@ FlutterMethodChannel* globalMethodChannel;
     [alert show];
 #pragma clang diagnostic pop
 }
+/**
+ 开屏广告回调-结束
+ */
+
+/**
+ 激励视频回调 BUNativeExpressRewardedVideoAdDelegate
+ */
+- (void)nativeExpressRewardedVideoAdViewRenderSuccess:(BUNativeExpressRewardedVideoAd *)rewardedVideoAd {
+    [self.rewardedAd showAdFromRootViewController: [self rootViewController]];
+    //激励视频渲染完成并展示
+}
+
+- (void)nativeExpressRewardedVideoAdDidPlayFinish:(BUNativeExpressRewardedVideoAd *)rewardedVideoAd didFailWithError:(NSError *_Nullable)error {
+    //激励视频播放完成
+    NSMutableDictionary *mutableDictionary=[NSMutableDictionary dictionaryWithCapacity:5];
+    [mutableDictionary setValue:[NSNumber numberWithInt:0] forKey:@"code"];
+    [mutableDictionary setValue:@"success" forKey:@"message"];
+    [mutableDictionary setValue:@YES forKey:@"verify"];
+    [mutableDictionary setValue:[NSNumber numberWithFloat:_rewardedAd.rewardedVideoModel.rewardAmount] forKey:@"amount"];
+    [mutableDictionary setValue:_rewardedAd.rewardedVideoModel.rewardName forKey:@"name"];
+    [globalMethodChannel invokeMethod:@"onRewardResponse" arguments:mutableDictionary];
+}
+
+-(void)nativeExpressRewardedVideoAdServerRewardDidSucceed:(BUNativeExpressRewardedVideoAd *)rewardedVideoAd verify:(BOOL)verify {
+    
+}
+
+
+- (void)nativeExpressRewardedVideoAdDidClose:(BUNativeExpressRewardedVideoAd *)rewardedVideoAd {
+    //激励视频关闭
+    
+}
+/**
+激励视频回调结束
+*/
+
+/**
+激励视频回调 BURewardedVideoAdDelegate
+*/
+- (void)rewardedVideoAdDidVisible:(BURewardedVideoAd *)rewardedVideoAd{
+    
+}
+- (void)rewardedVideoAdDidPlayFinish:(BURewardedVideoAd *)rewardedVideoAd didFailWithError:(NSError *)error {
+    //激励视频播放完成
+    NSMutableDictionary *mutableDictionary=[NSMutableDictionary dictionaryWithCapacity:5];
+    [mutableDictionary setValue:[NSNumber numberWithInt:0] forKey:@"code"];
+    [mutableDictionary setValue:@"success" forKey:@"message"];
+    [mutableDictionary setValue:@YES forKey:@"verify"];
+    [mutableDictionary setValue:[NSNumber numberWithFloat:_rewardedAd.rewardedVideoModel.rewardAmount] forKey:@"amount"];
+    [mutableDictionary setValue:_rewardedAd.rewardedVideoModel.rewardName forKey:@"name"];
+    [globalMethodChannel invokeMethod:@"onRewardResponse" arguments:mutableDictionary];
+}
+
+- (void)rewardedVideoAdServerRewardDidSucceed:(BURewardedVideoAd *)rewardedVideoAd verify:(BOOL)verify {
+    
+}
+
+- (void)rewardedVideoAdDidClose:(BURewardedVideoAd *)rewardedVideoAd {
+    
+}
+/**
+激励视频回调结束
+*/
 
 @end
